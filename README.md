@@ -1,2 +1,2 @@
-# ICT1001-Python
-ICT1001 Project Work
+# ICT1002-Python
+ICT1002 Project Work
