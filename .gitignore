@@ -1,2 +1,3 @@
 .vscode/
 .pycharm/
+__pycache__/
