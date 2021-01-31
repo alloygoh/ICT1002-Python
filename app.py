@@ -10,6 +10,8 @@ ALLOWED_EXTENSIONS = {'txt', 'log'}
 UPLOAD_FOLDER = './resource/uploads/'
 app = Flask(__name__)
 app.secret_key = b'\xed\xa1\x80\t\xa5n_\xcd\xb7\xfc\x83\xa20\x13]\x9b\xfe\xf3\xc4\xd3\xa5'
+# increase file size limit to prevent 413 error
+app.config['MAX_CONTENT_LENGTH'] = 20 * 1024 * 1024
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 def allowed_file(filename):

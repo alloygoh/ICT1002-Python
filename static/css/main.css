@@ -1,0 +1,11 @@
+.flashes{
+    background-color: rgb(211, 44, 44);
+}
+
+.functionality{
+    background-color: lightslategray;
+    color: white;
+    text-align: center;
+    padding: 30px;
+    font-family: Georgia, Serif;
+}
