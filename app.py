@@ -19,12 +19,13 @@ def allowed_file(filename):
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 @app.route("/",methods=["GET","POST"])
-def index():
+def index(filename=None):
     if request.method == "POST":
         # check POST request for file
         if 'file' not in request.files:
             flash('No File Part','error')
             return redirect(request.url)
+
         file = request.files['file']
         # check for empty file upload
         if file.filename == '':
@@ -32,9 +33,20 @@ def index():
             return redirect(request.url)
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
+            if not os.path.isdir('./resource/uploads'):
+                os.mkdir(os.path.join(os.getcwd(),'resource/uploads'))
             file.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
-            return redirect(url_for('uploaded_file',filename=filename))
+            return redirect(url_for('index',filename=filename))
         else:
             flash("Invalid file extention")
             return render_template('index.html')
+    elif request.method == "GET" and filename is not None:
+        #process and assign job for file
+        return
+    
     return render_template('index.html')
+
+@app.route('/drender/<int:job_id>')
+def drender(job_id):
+    #look up job_id and display stuff
+    return
