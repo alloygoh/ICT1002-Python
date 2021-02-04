@@ -42,6 +42,8 @@ def index(filename=None):
             return render_template('index.html')
     elif request.method == "GET" and filename is not None:
         #process and assign job for file
+        # job_id = process(filename)
+        # return url_for(drender/job_id)
         return
     
     return render_template('index.html')
