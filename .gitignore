@@ -1,3 +1,4 @@
 .vscode/
 .pycharm/
+.venv/
 __pycache__/
