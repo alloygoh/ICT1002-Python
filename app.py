@@ -41,7 +41,7 @@ def index(filename=None):
                 os.mkdir(os.path.join(os.getcwd(),'resource/uploads'))
             file.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
             print(url_for('index',_external=True,filename=filename))
-            return redirect(url_for('index',filename=filename,_external=True))
+            return redirect(url_for('drender',filename=filename))
 
         else:
             flash("Invalid file extention")
@@ -50,14 +50,15 @@ def index(filename=None):
         #process and assign job for file
         #job_id=process(filename)
         # return url_for(drender/job_id)
-        
+        print("here") 
         nodes = process_ssh()
         return redirect(url_for('drender',nodes))
-    
+    print(filename) 
     return render_template('index.html')
 
 @app.route('/drender')
-def drender(nodes):
+def drender():
+    filename = request.args.get('filename')
+    nodes = process_ssh()
     print(nodes)
-    #look up job_id and display stuff
-    return
+    return render_template('visuals.html',nodes=nodes)

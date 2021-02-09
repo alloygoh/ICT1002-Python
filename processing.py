@@ -51,10 +51,6 @@ def process_ssh():
         country,_,_,_ = requestGeoData(i)
         AttackNodes.append(AttackNode(i,country,targets_list,invalid_targets_list))
 
-    print(AttackNodes)
-    for i in AttackNodes:
-        print(i)
-
     return AttackNodes
     #export_format = {'User': user, 'IP Address': ip, "Port Number":port, 'Is Invalid User':invalid}     #export to dataframe
     #export = pd.DataFrame(export_format)

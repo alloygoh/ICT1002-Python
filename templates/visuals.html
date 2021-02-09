@@ -1,0 +1,20 @@
+
+{% extends "layout.html" %}
+{% block body %}
+<table class='table table-striped'>
+    <thead class='thead-dark'>
+        <tr>
+            <th scope='col'>IP</th>
+            <th scope='col'>Request Traffic</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for n in nodes %}
+        <tr>
+            <td>{{n.ip}}</td>
+            <td>{{n.get_totaltries()}}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}

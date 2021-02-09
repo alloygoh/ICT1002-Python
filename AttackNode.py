@@ -12,3 +12,6 @@ class AttackNode:
 
     def get_validusernames(self):
         return [t for t in self.targets if t not in self.invalid_targets]
+
+    def get_totaltries(self):
+        return sum(self.targets.values())
