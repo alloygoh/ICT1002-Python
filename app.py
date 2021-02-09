@@ -5,6 +5,9 @@ from flask.templating import render_template
 from werkzeug.utils import secure_filename
 import os
 
+# custom imports
+from processing import process_ssh
+
 # app configs
 ALLOWED_EXTENSIONS = {'txt', 'log'}
 UPLOAD_FOLDER = './resource/uploads/'
@@ -31,24 +34,30 @@ def index(filename=None):
         if file.filename == '':
             flash('No File Selected', "error")
             return redirect(request.url)
+
         if file and allowed_file(file.filename):
             filename = secure_filename(file.filename)
             if not os.path.isdir('./resource/uploads'):
                 os.mkdir(os.path.join(os.getcwd(),'resource/uploads'))
             file.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
-            return redirect(url_for('index',filename=filename))
+            print(url_for('index',_external=True,filename=filename))
+            return redirect(url_for('index',filename=filename,_external=True))
+
         else:
             flash("Invalid file extention")
             return render_template('index.html')
     elif request.method == "GET" and filename is not None:
         #process and assign job for file
-        # job_id = process(filename)
+        #job_id=process(filename)
         # return url_for(drender/job_id)
-        return
+        
+        nodes = process_ssh()
+        return redirect(url_for('drender',nodes))
     
     return render_template('index.html')
 
-@app.route('/drender/<int:job_id>')
-def drender(job_id):
+@app.route('/drender')
+def drender(nodes):
+    print(nodes)
     #look up job_id and display stuff
     return
