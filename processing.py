@@ -48,8 +48,8 @@ def process_ssh():
         invalid_targets_list = [x for x in targets_list if x in invalid_users]
 
         # ignore redundant
-        country,_,_,_ = requestGeoData(i)
-        AttackNodes.append(AttackNode(i,country,targets_list,invalid_targets_list))
+        country,geo,_,_,_ = requestGeoData(i)
+        AttackNodes.append(AttackNode(i,country,geo,targets_list,invalid_targets_list))
 
     return AttackNodes
     #export_format = {'User': user, 'IP Address': ip, "Port Number":port, 'Is Invalid User':invalid}     #export to dataframe

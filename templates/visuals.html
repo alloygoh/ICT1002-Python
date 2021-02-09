@@ -12,9 +12,11 @@
         {% for n in nodes %}
         <tr>
             <td>{{n.ip}}</td>
+            <td>{{n.country}}</td>
             <td>{{n.get_totaltries()}}</td>
         </tr>
         {% endfor %}
     </tbody>
 </table>
+{% include 'map.html' %}
 {% endblock %}

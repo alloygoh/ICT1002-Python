@@ -2,8 +2,11 @@
 from types import MethodDescriptorType
 from flask import Flask, flash, request, redirect, url_for
 from flask.templating import render_template
+from folium.map import Tooltip
+from numpy import tile
 from werkzeug.utils import secure_filename
 import os
+import folium
 
 # custom imports
 from processing import process_ssh
@@ -61,4 +64,19 @@ def drender():
     filename = request.args.get('filename')
     nodes = process_ssh()
     print(nodes)
-    return render_template('visuals.html',nodes=nodes)
+    if generate_map(nodes):
+        return render_template('visuals.html',nodes=nodes)
+    flash('Something went wrong!!','error')
+    return redirect(url_for('index'))
+
+def generate_map(nodes):
+    start_geo = (1.3521, 103.8198)
+    folium_map = folium.Map(location=start_geo,zoom_start=4,tiles='Stamen Toner',min_zoom=2)
+    for i in nodes:
+        folium.Marker(
+            i.geo,
+            popup=i.ip, 
+            tooltip='More Info'
+        ).add_to(folium_map)
+    folium_map.save('templates/map.html')
+    return True

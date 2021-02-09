@@ -19,7 +19,9 @@ def requestGeoData(ip_addr):
     city = data['city']
     country = data['country']
     region = data['region']
-    return country,region,city,org
+    # lat,long
+    geo = data['loc'].split(',')
+    return country,geo,region,city,org
 
 def exportData(filename):
     if (os.path.isfile(filename+'.csv')):
