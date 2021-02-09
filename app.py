@@ -64,6 +64,7 @@ def drender():
     filename = request.args.get('filename')
     nodes = process_ssh()
     print(nodes)
+    print(len(nodes))
     if generate_map(nodes):
         return render_template('visuals.html',nodes=nodes)
     flash('Something went wrong!!','error')
