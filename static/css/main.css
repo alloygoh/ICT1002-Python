@@ -8,4 +8,17 @@
     text-align: center;
     padding: 30px;
     font-family: Georgia, Serif;
+    margin-top: 0px;
+}
+
+#custom-nav{
+    background-color: black;
+    border-radius: 0px;
+    border: solid black;
+    margin-bottom: 0px;
+    background-image: none;
+}
+
+#DataTables_Table_0_wrapper{
+    margin-top:20px;
 }

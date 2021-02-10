@@ -4,3 +4,7 @@ $(document).ready(function() {
         "pageLength": -1
     });
 } );
+
+function eraseCache(){
+    confirm("Going back to main page will erase analysis cache. Proceed?");
+}

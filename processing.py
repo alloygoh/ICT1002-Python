@@ -6,8 +6,8 @@ from AttackNode import AttackNode
 from analyse import requestGeoData
 
 
-def process_ssh():
-    f = open("resource/sshd.log", "r")           #Reading the File
+def process_ssh(filepath):
+    f = open(filepath, "r")           #Reading the File
     logs = f.readlines()
     failure = []                        #Lists
     invalid = []

@@ -20,6 +20,9 @@ app.secret_key = b'\xed\xa1\x80\t\xa5n_\xcd\xb7\xfc\x83\xa20\x13]\x9b\xfe\xf3\xc
 app.config['MAX_CONTENT_LENGTH'] = 20 * 1024 * 1024
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
+# internal cache
+current_analysis = None
+
 def allowed_file(filename):
     return '.' in filename and \
            filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
@@ -43,33 +46,43 @@ def index(filename=None):
             if not os.path.isdir('./resource/uploads'):
                 os.mkdir(os.path.join(os.getcwd(),'resource/uploads'))
             file.save(os.path.join(app.config['UPLOAD_FOLDER'],filename))
-            print(url_for('index',_external=True,filename=filename))
             return redirect(url_for('drender',filename=filename))
 
         else:
             flash("Invalid file extention")
             return render_template('index.html')
-    elif request.method == "GET" and filename is not None:
-        #process and assign job for file
-        #job_id=process(filename)
-        # return url_for(drender/job_id)
-        print("here") 
-        nodes = process_ssh()
-        return redirect(url_for('drender',nodes))
-    print(filename) 
+
     return render_template('index.html')
 
 @app.route('/drender')
 def drender():
     filename = request.args.get('filename')
-    nodes = process_ssh()
+    full_path = os.path.join(app.config['UPLOAD_FOLDER'],filename)
+    # check cache
+    global current_analysis
+    if current_analysis is None:
+    # handle exception for unexpected log file
+        try:
+            print("[+] Performing Analysis now")
+            nodes = process_ssh(full_path)
+            # add to cache to prevent re-process on reload
+            current_analysis = nodes
+        except:
+            flash("Unable to process and render visuals",'error')
+            return redirect(url_for('index'))
+    else:
+        nodes = current_analysis
+        print("[+] Retreived from cache")
+    # debug info
     print(nodes)
     print(len(nodes))
     if generate_map(nodes):
         return render_template('visuals.html',nodes=nodes)
+    # handle unexpected exception
     flash('Something went wrong!!','error')
     return redirect(url_for('index'))
 
+# drender helper function
 def generate_map(nodes):
     start_geo = (1.3521, 103.8198)
     folium_map = folium.Map(location=start_geo,zoom_start=4,tiles='Stamen Toner',min_zoom=2)
@@ -81,3 +94,11 @@ def generate_map(nodes):
         ).add_to(folium_map)
     folium_map.save('templates/map.html')
     return True
+
+@app.route('/api/release-cache')
+def release_cache():
+    global current_analysis
+    current_analysis = None
+    print("[+] cache released!")
+    print(current_analysis)
+    return redirect(url_for('index'))
