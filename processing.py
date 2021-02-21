@@ -4,6 +4,7 @@ from collections import Counter
 # custom imports
 from AttackNode import AttackNode
 from analyse import requestGeoData
+from signature import *
 
 
 def process_ssh(filepath):
@@ -37,7 +38,8 @@ def process_ssh(filepath):
             invalid.append("No")
 
     AttackNodes = []
-    ip_unique = set(ip)
+    ip_unique = sorted(set(ip))
+
     for i in ip_unique:
         # find first and last index
         first_seen = ip.index(i)
@@ -49,8 +51,11 @@ def process_ssh(filepath):
 
         # ignore redundant
         country,geo,_,_,_ = requestGeoData(i)
-        AttackNodes.append(AttackNode(i,country,geo,targets_list,invalid_targets_list))
 
+        AttackNodes.append(AttackNode(i,country,geo,targets_list,invalid_targets_list)) 
+        for n in AttackNodes:
+            # run and apply signatures
+            n.run_sigs()     
     return AttackNodes
     #export_format = {'User': user, 'IP Address': ip, "Port Number":port, 'Is Invalid User':invalid}     #export to dataframe
     #export = pd.DataFrame(export_format)

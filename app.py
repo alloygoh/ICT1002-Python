@@ -6,6 +6,7 @@ import os
 import folium
 from time import sleep
 
+
 # custom imports
 from processing import process_ssh
 
@@ -82,12 +83,19 @@ def drender():
 
 # drender helper function
 def generate_map(nodes):
+    # run attack signatures
     start_geo = (1.3521, 103.8198)
     folium_map = folium.Map(location=start_geo,zoom_start=4,tiles='Stamen Toner',min_zoom=2)
     for i in nodes:
+        attack_info = ''
+        for attack in i.attacks.keys():
+            if attack == 'ssh_enum_user':
+                attack_info += '<li><a href="https://www.cvedetails.com/cve/CVE-2018-15473/">Possible SSH User Enumeration Detected</a></li>'
+            if attack == 'ssh_bruteforce':
+                attack_info += '<li>Possible bruteforce attempt detected</li>'
         folium.Marker(
             i.geo,
-            popup=i.ip, 
+            popup=i.ip + '</br>' + attack_info, 
             tooltip='More Info'
         ).add_to(folium_map)
     folium_map.save('static/map.html')
@@ -108,8 +116,7 @@ def refresh_map():
     global current_analysis
     nodes = current_analysis
     refresh_nodes = [n for n in nodes if n.ip in ip_parsed]
-    print(refresh_nodes)
-    # add code to generate new map
+    #print(refresh_nodes)
     generate_map(refresh_nodes)
     sleep(1)
     return "Success"
