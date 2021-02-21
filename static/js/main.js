@@ -1,8 +1,40 @@
 $(document).ready(function() {
-    $.noConflict();
-    $('.table-sortable').DataTable({
+    jQuery.noConflict();
+    var table = $('.table-sortable').DataTable({
         "pageLength": -1
     });
+    
+    new $.fn.dataTable.Buttons( table,{
+        buttons: [
+            {
+                text: "Filter On Map",
+                action: function (e,dt, node, conf){
+                    console.log("CLICKED");
+                    var tmp = [];
+                    $('.odd td:first-child').each(function(){
+                        tmp.push(this.innerHTML);
+                    });
+                    $('.even td:first-child').each(function(){
+                        tmp.push(this.innerHTML);
+                    });
+                    $.ajax('api/refresh-map',
+                    {
+                        type: 'POST',
+                        data: {ip:tmp.toString()},
+                        success: function(status){
+                            console.log(status);
+                        }
+                    });
+                    //$.post('api/refresh-map', {'ip':tmp.toString()});
+                    console.log(tmp);
+                }
+            },
+        ]
+    });
+
+    table.buttons(0,null).container().prependTo(
+        $('#DataTables_Table_0_filter label')
+    );
 } );
 
 function eraseCache(){

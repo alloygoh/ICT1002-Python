@@ -1,9 +1,6 @@
 # imports
-from types import MethodDescriptorType
 from flask import Flask, flash, request, redirect, url_for
 from flask.templating import render_template
-from folium.map import Tooltip
-from numpy import tile
 from werkzeug.utils import secure_filename
 import os
 import folium
@@ -102,3 +99,13 @@ def release_cache():
     print("[+] cache released!")
     print(current_analysis)
     return redirect(url_for('index'))
+
+@app.route('/api/refresh-map',methods=['POST'])
+def refresh_map():
+    data = request.form.to_dict()
+    ip_parsed = data['ip'].split(',')
+    global current_analysis
+    nodes = current_analysis
+    print(nodes)
+    refresh_nodes = [n for n in nodes if n.ip in ip_parsed]
+    print(refresh_nodes)
