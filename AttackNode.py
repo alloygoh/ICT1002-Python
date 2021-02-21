@@ -29,8 +29,8 @@ class AttackNode:
         enum_users = detect_ssh_enumeration(self)
         bf_users = detect_bruteforce(self)
         tmp_dict = {}
-        print(enum_users)
-        print(bf_users)
+        #print(enum_users)
+        #print(bf_users)
         if len(enum_users) > 0:
             tmp_dict['ssh_enum_user'] = enum_users
         if len(bf_users) > 0:

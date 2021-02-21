@@ -117,3 +117,4 @@ def refresh_map():
     print(nodes)
     refresh_nodes = [n for n in nodes if n.ip in ip_parsed]
     print(refresh_nodes)
+    # add code to generate new map
