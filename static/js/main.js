@@ -1,5 +1,4 @@
 $(document).ready(function() {
-
     jQuery.noConflict();
     var table = $('.table-sortable').DataTable({
         "pageLength": -1
