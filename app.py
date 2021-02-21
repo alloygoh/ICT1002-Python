@@ -4,6 +4,7 @@ from flask.templating import render_template
 from werkzeug.utils import secure_filename
 import os
 import folium
+from time import sleep
 
 # custom imports
 from processing import process_ssh
@@ -89,7 +90,7 @@ def generate_map(nodes):
             popup=i.ip, 
             tooltip='More Info'
         ).add_to(folium_map)
-    folium_map.save('templates/map.html')
+    folium_map.save('static/map.html')
     return True
 
 @app.route('/api/release-cache')
@@ -106,7 +107,9 @@ def refresh_map():
     ip_parsed = data['ip'].split(',')
     global current_analysis
     nodes = current_analysis
-    print(nodes)
     refresh_nodes = [n for n in nodes if n.ip in ip_parsed]
     print(refresh_nodes)
     # add code to generate new map
+    generate_map(refresh_nodes)
+    sleep(1)
+    return "Success"

@@ -1,4 +1,4 @@
-$(document).ready(function() {
+jQuery(document).ready(function($) {
     jQuery.noConflict();
     var table = $('.table-sortable').DataTable({
         "pageLength": -1
@@ -22,10 +22,10 @@ $(document).ready(function() {
                         type: 'POST',
                         data: {ip:tmp.toString()},
                         success: function(status){
-                            console.log(status);
+                           document.getElementById('map-wrapper').contentDocument.location.reload(true);
+                           //$('#map-wrapper').attr('src', $('#map-wrapper').attr('src'));
                         }
                     });
-                    //$.post('api/refresh-map', {'ip':tmp.toString()});
                     console.log(tmp);
                 }
             },
