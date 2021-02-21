@@ -1,6 +1,7 @@
 # imports
 from flask import Flask, flash, request, redirect, url_for
 from flask.templating import render_template
+
 from werkzeug.utils import secure_filename
 import os
 import folium
@@ -81,12 +82,19 @@ def drender():
 
 # drender helper function
 def generate_map(nodes):
+    # run attack signatures
     start_geo = (1.3521, 103.8198)
     folium_map = folium.Map(location=start_geo,zoom_start=4,tiles='Stamen Toner',min_zoom=2)
     for i in nodes:
+        attack_info = ''
+        for attack in i.attacks.keys():
+            if attack == 'ssh_enum_user':
+                attack_info += '<li><a href="https://www.cvedetails.com/cve/CVE-2018-15473/">Possible SSH User Enumeration Detected</a></li>'
+            if attack == 'ssh_bruteforce':
+                attack_info += '<li>Possible bruteforce attempt detected</li>'
         folium.Marker(
             i.geo,
-            popup=i.ip, 
+            popup=i.ip + '</br>' + attack_info, 
             tooltip='More Info'
         ).add_to(folium_map)
     folium_map.save('templates/map.html')
