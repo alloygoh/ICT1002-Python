@@ -108,9 +108,5 @@ def refresh_map():
     nodes = current_analysis
     print(nodes)
     refresh_nodes = [n for n in nodes if n.ip in ip_parsed]
-<<<<<<< HEAD
     print(refresh_nodes)
     # add code to generate new map
-=======
-    print(refresh_nodes)
->>>>>>> 6658bb8cc4abb2d8536e24835dec85ac4e8b9b55
