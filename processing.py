@@ -6,6 +6,7 @@ from AttackNode import AttackNode
 from analyse import requestGeoData
 from signature import *
 
+
 def process_ssh(filepath):
     f = open(filepath, "r")           #Reading the File
     logs = f.readlines()
@@ -38,6 +39,7 @@ def process_ssh(filepath):
 
     AttackNodes = []
     ip_unique = sorted(set(ip))
+
     for i in ip_unique:
         # find first and last index
         first_seen = ip.index(i)
@@ -49,6 +51,7 @@ def process_ssh(filepath):
 
         # ignore redundant
         country,geo,_,_,_ = requestGeoData(i)
+
         AttackNodes.append(AttackNode(i,country,geo,targets_list,invalid_targets_list)) 
         for n in AttackNodes:
             # run and apply signatures

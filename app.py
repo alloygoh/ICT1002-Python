@@ -1,11 +1,11 @@
 # imports
-from types import MethodDescriptorType
 from flask import Flask, flash, request, redirect, url_for
 from flask.templating import render_template
-from numpy import tile
 from werkzeug.utils import secure_filename
 import os
 import folium
+from time import sleep
+
 
 # custom imports
 from processing import process_ssh
@@ -98,7 +98,7 @@ def generate_map(nodes):
             popup=i.ip + '</br>' + attack_info, 
             tooltip='More Info'
         ).add_to(folium_map)
-    folium_map.save('templates/map.html')
+    folium_map.save('static/map.html')
     return True
 
 @app.route('/api/release-cache')
@@ -108,3 +108,15 @@ def release_cache():
     print("[+] cache released!")
     print(current_analysis)
     return redirect(url_for('index'))
+
+@app.route('/api/refresh-map',methods=['POST'])
+def refresh_map():
+    data = request.form.to_dict()
+    ip_parsed = data['ip'].split(',')
+    global current_analysis
+    nodes = current_analysis
+    refresh_nodes = [n for n in nodes if n.ip in ip_parsed]
+    #print(refresh_nodes)
+    generate_map(refresh_nodes)
+    sleep(1)
+    return "Success"
