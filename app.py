@@ -2,7 +2,6 @@
 from flask import Flask, flash, request, redirect, url_for
 from flask.templating import render_template
 from werkzeug.utils import secure_filename
-# graphing imports
 # utils import
 import os
 import folium
@@ -13,6 +12,7 @@ from itertools import islice
 
 # custom imports
 from processing import process_ssh
+from ftp import process_ftp
 
 # app configs
 ALLOWED_EXTENSIONS = {'txt', 'log'}
@@ -67,7 +67,10 @@ def drender():
     # handle exception for unexpected log file
         try:
             print("[+] Performing Analysis now")
-            nodes = process_ssh(full_path)
+            if 'sshd' in full_path:
+                nodes = process_ssh(full_path)
+            else:
+                nodes = process_ftp(full_path)
             # add to cache to prevent re-process on reload
             current_analysis = nodes
         except:
@@ -139,6 +142,8 @@ def pchart_wrapper(nodes,purpose):
     if purpose == 'top-ten-users':
         target_list = [d.targets for d in nodes]
         combined = dict(reduce(lambda x,y: Counter(x) + Counter(y),target_list))
+        if 'UNSPECIFIED' in combined.keys():
+            combined.pop('UNSPECIFIED')
         combined = dict(sorted(combined.items(),key=lambda item: item[1],reverse=True))
         top_ten = dict(islice(combined.items(),10))
         others = sum([v for k,v in combined.items() if k not in top_ten.keys()])

@@ -32,9 +32,13 @@ class AttackNode:
     def get_totaltries(self) -> int:
         return sum(self.targets.values())
 
-    def run_sigs(self):
-        enum_users = detect_ssh_enumeration(self)
-        bf_users = detect_bruteforce(self)
+    def run_sigs(self,ftp=False):
+        if ftp:
+            bf_users = detect_bruteforce(self)
+            enum_users = []
+        else:
+            enum_users = detect_ssh_enumeration(self)
+            bf_users = detect_bruteforce(self)
         tmp_dict = {}
 
         if len(enum_users) > 0:
