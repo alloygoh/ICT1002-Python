@@ -1,5 +1,4 @@
 # routing imports
-from analyse import exportData
 from flask import Flask, flash, request, redirect, url_for
 from flask.templating import render_template
 from werkzeug.utils import secure_filename
