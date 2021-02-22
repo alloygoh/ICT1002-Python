@@ -12,7 +12,12 @@ def requestGeoData(ip_addr):
         response = urlopen('http://ipinfo.io/' + ip_addr + '/json')
     except:
         print('unable to connect to ipinfo.io')
-        return False
+        print('Trying ipwhois.app')
+        try:
+            response = urlopen('https://ipwhois.app/json/' + ip_addr)
+        except:
+            print('unable to connect to both')
+            return False
     
     data = json.load(response)
     org = data['org']
@@ -20,7 +25,10 @@ def requestGeoData(ip_addr):
     country = data['country']
     region = data['region']
     # lat,long
-    geo = data['loc'].split(',')
+    try:
+        geo = data['loc'].split(',')
+    except:
+        geo = [data['latitude'],data['longitude']]
     return country,geo,region,city,org
 
 def exportData(filename):
