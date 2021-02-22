@@ -1,11 +1,15 @@
-# imports
+# routing imports
 from flask import Flask, flash, request, redirect, url_for
 from flask.templating import render_template
 from werkzeug.utils import secure_filename
+# graphing imports
+# utils import
 import os
 import folium
 from time import sleep
-
+from collections import Counter
+from functools import reduce
+from itertools import islice
 
 # custom imports
 from processing import process_ssh
@@ -76,7 +80,11 @@ def drender():
     print(nodes)
     print(len(nodes))
     if generate_map(nodes):
-        return render_template('visuals.html',nodes=nodes)
+        ttu_data = pchart_wrapper(nodes,'top-ten-users')
+        gen_chart_data("Top Ten Users", 'ttu.html',ttu_data)
+        cbd_data = pchart_wrapper(nodes,'countries')
+        gen_chart_data("Countries Breakdown",'cbd.html',cbd_data)
+        return render_template('visuals.html',nodes=nodes,fnames=['ttu.html','cbd.html'])
     # handle unexpected exception
     flash('Something went wrong!!','error')
     return redirect(url_for('index'))
@@ -118,5 +126,27 @@ def refresh_map():
     refresh_nodes = [n for n in nodes if n.ip in ip_parsed]
     #print(refresh_nodes)
     generate_map(refresh_nodes)
-    sleep(1)
-    return "Success"
+    sleep(1) 
+    return "Success" 
+
+def pchart_wrapper(nodes,purpose):
+    if purpose == 'top-ten-users':
+        target_list = [d.targets for d in nodes]
+        combined = dict(reduce(lambda x,y: Counter(x) + Counter(y),target_list))
+        combined = dict(sorted(combined.items(),key=lambda item: item[1],reverse=True))
+        top_ten = dict(islice(combined.items(),10))
+        others = sum([v for k,v in combined.items() if k not in top_ten.keys()])
+        top_ten["Others"] = others
+        return top_ten
+    elif purpose == 'countries':
+        country_list = list(set([d.country for d in nodes]))
+        country_dict = {}
+        for c in country_list:
+            country_dict[c] = sum([t.get_totaltries() for t in nodes if t.country == c])
+        return country_dict
+
+def gen_chart_data(chart_title,filename,data):
+    with open('static/' + filename,'w') as f:
+        f.write(render_template('pie-chart.html', chart_title=chart_title, data=data))
+        f.close()
+    return True
