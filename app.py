@@ -93,6 +93,7 @@ def drender():
 def generate_map(nodes):
     # run attack signatures
     start_geo = (1.3521, 103.8198)
+    baseline_geo = []
     folium_map = folium.Map(location=start_geo,zoom_start=4,tiles='Stamen Toner',min_zoom=2)
     for i in nodes:
         attack_info = ''
@@ -101,11 +102,16 @@ def generate_map(nodes):
                 attack_info += '<li><a href="https://www.cvedetails.com/cve/CVE-2018-15473/">Possible SSH User Enumeration Detected</a></li>'
             if attack == 'ssh_bruteforce':
                 attack_info += '<li>Possible bruteforce attempt detected</li>'
+        if i.geo in baseline_geo:
+            mgeo = [str(float(i.geo[0]) + 0.0050),i.geo[1]]
+        else:
+            mgeo = i.geo
         folium.Marker(
-            i.geo,
+            mgeo,
             popup=i.ip + '</br>' + attack_info, 
             tooltip='More Info'
         ).add_to(folium_map)
+        baseline_geo.append(mgeo)
     folium_map.save('static/map.html')
     return True
 
@@ -124,7 +130,7 @@ def refresh_map():
     global current_analysis
     nodes = current_analysis
     refresh_nodes = [n for n in nodes if n.ip in ip_parsed]
-    #print(refresh_nodes)
+    print(refresh_nodes)
     generate_map(refresh_nodes)
     sleep(1) 
     return "Success" 
