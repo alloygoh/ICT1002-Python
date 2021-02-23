@@ -1,7 +1,10 @@
 jQuery(document).ready(function($) {
     jQuery.noConflict();
     var table = $('.table-sortable').DataTable({
-        "pageLength": -1
+        "pageLength": -1,
+        columnDefs: [
+            {type: 'ip-address', targets: 0}
+        ]
     });
     
     new $.fn.dataTable.Buttons( table,{
