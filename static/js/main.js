@@ -38,8 +38,13 @@ jQuery(document).ready(function($) {
     table.buttons(0,null).container().prependTo(
         $('#DataTables_Table_0_filter label')
     );
+
+    var t = Array.from(document.getElementsByTagName("iframe"));
+    t.forEach(element => {
+        element.contentDocument.location.reload(true);
+    });
 } );
 
 function eraseCache(){
-    confirm("Going back to main page will erase analysis cache. Proceed?");
+   return confirm("Going back to main page will erase analysis cache. Proceed?");
 }

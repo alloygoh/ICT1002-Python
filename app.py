@@ -73,8 +73,9 @@ def drender():
                 nodes = process_ftp(full_path)
             # add to cache to prevent re-process on reload
             current_analysis = nodes
-        except:
+        except Exception as e:
             flash("Unable to process and render visuals",'error')
+            print(e)
             return redirect(url_for('index'))
     else:
         nodes = current_analysis
@@ -104,7 +105,9 @@ def generate_map(nodes):
             if attack == 'ssh_enum_user':
                 attack_info += '<li><a href="https://www.cvedetails.com/cve/CVE-2018-15473/">Possible SSH User Enumeration Detected</a></li>'
             if attack == 'ssh_bruteforce':
-                attack_info += '<li>Possible bruteforce attempt detected</li>'
+                attack_info += '<li>Possible Bruteforce Attempt Detected</li>'
+            if attack == 'fuzzing':
+                attack_info += '<li>Suspicious Non-Ascii Traffic, Possible Fuzzing Attempt Detected</li>'
         if i.geo in baseline_geo:
             mgeo = [str(float(i.geo[0]) + 0.0050),i.geo[1]]
         else:
@@ -122,6 +125,9 @@ def generate_map(nodes):
 def release_cache():
     global current_analysis
     current_analysis = None
+    os.remove('static/cbd.html')
+    os.remove('static/map.html')
+    os.remove('static/ttu.html')
     print("[+] cache released!")
     print(current_analysis)
     return redirect(url_for('index'))

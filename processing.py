@@ -55,7 +55,9 @@ def process_ssh(filepath):
         AttackNodes.append(AttackNode(i,country,geo,targets_list,invalid_targets_list)) 
         for n in AttackNodes:
             # run and apply signatures
-            n.run_sigs()     
+            n.run_sigs() 
+        # cleanup for nodes not flagged
+        AttackNodes = [ n for n in AttackNodes if bool(n.attacks)]
     return AttackNodes
     #export_format = {'User': user, 'IP Address': ip, "Port Number":port, 'Is Invalid User':invalid}     #export to dataframe
     #export = pd.DataFrame(export_format)

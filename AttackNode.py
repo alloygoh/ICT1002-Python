@@ -1,6 +1,6 @@
 from signature import *
 class AttackNode:
-    def __init__(self,ip:str,country:str,geo:list,targets:dict,invalid_targets:list):
+    def __init__(self,ip:str,country:str,geo:list,targets:dict,invalid_targets:list,errortype=None):
         self.ip = ip
 
         # self.geoinfo = dict{country, etc, etc}
@@ -15,8 +15,10 @@ class AttackNode:
 
         # dictionary containing {username:tries}
         self.targets = targets
-        #  list of invalid usernames
+        # list of invalid usernames
         self.invalid_targets = invalid_targets
+        # additional info for ftp sigs
+        self.errortype = errortype
 
         # init to None 1st
         self.attacks = None
@@ -34,16 +36,19 @@ class AttackNode:
 
     def run_sigs(self,ftp=False):
         if ftp:
-            bf_users = detect_bruteforce(self)
             enum_users = []
+            is_fuzzing = detect_fuzzing(self)
+            bf_users = detect_ftp_bruteforce(self)
         else:
+            bf_users = detect_ssh_bruteforce(self)
             enum_users = detect_ssh_enumeration(self)
-            bf_users = detect_bruteforce(self)
+            is_fuzzing = False
         tmp_dict = {}
 
         if len(enum_users) > 0:
             tmp_dict['ssh_enum_user'] = enum_users
         if len(bf_users) > 0:
             tmp_dict['ssh_bruteforce'] = bf_users
+        if is_fuzzing:
+            tmp_dict['fuzzing'] = True
         self.attacks = tmp_dict
-
