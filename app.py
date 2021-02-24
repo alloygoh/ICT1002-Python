@@ -2,13 +2,18 @@
 from flask import Flask, flash, request, redirect, url_for
 from flask.templating import render_template
 from werkzeug.utils import secure_filename
+# graphing imports
+import matplotlib.pyplot as plt
+import matplotlib
+matplotlib.use('Agg')
+import pandas as pd
 # utils import
 import os
 import folium
 from time import sleep
 from collections import Counter
 from functools import reduce
-from itertools import islice
+from itertools import count, islice
 
 # custom imports
 from processing import process_ssh
@@ -84,6 +89,9 @@ def drender():
     print(nodes)
     print(len(nodes))
     if generate_map(nodes):
+        # if ssh attack node
+        if nodes[0].errortype == None:
+            gen_ssh_traffic_baseline_graph(nodes)
         ttu_data = pchart_wrapper(nodes,'top-ten-users')
         gen_chart_data("Top Ten Users", 'ttu.html',ttu_data)
         cbd_data = pchart_wrapper(nodes,'countries')
@@ -166,4 +174,25 @@ def gen_chart_data(chart_title,filename,data):
     with open('static/' + filename,'w') as f:
         f.write(render_template('pie-chart.html', chart_title=chart_title, data=data))
         f.close()
+    return True
+
+def gen_ssh_traffic_baseline_graph(nodes):
+    #grpip = pd.DataFrame({'IP':grpip.index, 'Count':grpip.values})
+    ip_list, count_list = [],[]
+    for n in nodes:
+        ip_list.append(n.ip)
+        count_list.append(n.get_totaltries())
+    grpip = pd.DataFrame(data={'IP':ip_list, 'Count':count_list})
+    vals = grpip['Count'].values.tolist()
+    avg = sum(vals) / len(vals)
+    width = 1
+    fig, ax = plt.subplots()
+    clrs = ['blue' if (x >= avg ) else 'grey' for x in vals ]
+    rects1 = ax.barh(grpip['IP'], vals, width,color = clrs)
+    plt.axvline(x=avg, color='r', linestyle='-')
+    plt.grid()
+    plt.subplots_adjust(left=0.4)
+    plt.title('Exceptional Traffic')
+    plt.gcf().set_size_inches(11,5)
+    plt.savefig('static/ssh_baseline.png')
     return True
