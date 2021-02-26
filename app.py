@@ -11,7 +11,7 @@ import folium
 from time import sleep
 from collections import Counter
 from functools import reduce
-from itertools import count, islice
+from itertools import islice
 
 # custom imports
 from processing import process_ssh

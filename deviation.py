@@ -77,7 +77,7 @@ def gen_ftp_deviation_graph(nodes,export):
     plt.axhline(y=max(dates['Count']),linestyle=(0, (5,10)), color='red') 
     plt.grid()
     fig.legend(loc="center right")
-    plt.title('Exceptional Traffic')
+    plt.title('Brute Force Detection')
     plt.gcf().set_size_inches(11,5)
     plt.savefig('static/deviation.png')
     return True
