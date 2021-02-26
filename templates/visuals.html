@@ -1,6 +1,9 @@
 
 {% extends "layout.html" %}
 {% block content %}
+<script src="static/js/ip-address.js"></script>
+<iframe id="pchart" src="./static/{{ fnames[0] }}" scrolling="no"></iframe>
+<iframe id="pchart" src="./static/{{ fnames[1] }}" scrolling="no"></iframe>
 <table class='table table-striped table-sortable table-bordered'>
     <thead class='thead-dark'>
         <tr>
@@ -19,5 +22,6 @@
         {% endfor %}
     </tbody>
 </table>
-{% include 'map.html' %}
+<img src="./static/deviation.png" id="deviation">
+<iframe id="map-wrapper" src="./static/map.html" width="100%" height="100%" style="overflow:hidden;height: 100vh;width: 100%;"></iframe>
 {% endblock %}

@@ -3,3 +3,6 @@
 .venv/
 __pycache__/
 resource/uploads/
+static/ttu.html
+static/map.html
+static/cbd.html
