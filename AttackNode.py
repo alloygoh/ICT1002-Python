@@ -48,7 +48,17 @@ class AttackNode:
         if len(enum_users) > 0:
             tmp_dict['ssh_enum_user'] = enum_users
         if len(bf_users) > 0:
-            tmp_dict['ssh_bruteforce'] = bf_users
+            tmp_dict['user_bruteforce'] = bf_users
         if is_fuzzing:
             tmp_dict['fuzzing'] = True
         self.attacks = tmp_dict
+    def sigs_descriptions(self):
+        descriptions = []
+        for s in self.attacks.keys():
+            if s == 'ssh_enum_user':
+                descriptions.append('Potential SSH Enumeration Detected (CVE-2018-15473)!')
+            elif s == 'user_bruteforce':
+                descriptions.append('User Bruteforce Detected!')
+            elif s == 'fuzzing':
+                descriptions.append('Suspicious Non-Ascii Traffic, Potential Fuzzing Detected!')
+        return descriptions

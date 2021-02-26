@@ -12,7 +12,6 @@ jQuery(document).ready(function($) {
             {
                 text: "Filter On Map",
                 action: function (e,dt, node, conf){
-                    console.log("CLICKED");
                     var tmp = [];
                     $('.odd td:first-child').each(function(){
                         tmp.push(this.innerHTML);
@@ -43,6 +42,8 @@ jQuery(document).ready(function($) {
     t.forEach(element => {
         element.contentDocument.location.reload(true);
     });
+    var a = document.getElementById("deviation");
+    a.src = a.src + "#" + new Date().getTime();
 } );
 
 function eraseCache(){

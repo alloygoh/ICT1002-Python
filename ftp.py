@@ -1,3 +1,4 @@
+import pandas as pd
 from AttackNode import AttackNode
 from analyse import requestGeoData
 
@@ -105,9 +106,6 @@ def process_ftp(filepath):
             if (ip[i] == ipaddr):
                 if (user[i] not in userList):
                    userList.append(user[i]) #GETTING UNIQUE USERS PER IP
-        #if ("UNSPECIFIED" in userList):
-        #    userList.remove("UNSPECIFIED") #IRRELEVANT TO CHECK FOR BRUTEFORCE
-       #print(f"{ipaddr}: {userList}")
 
         countList = []
         for i in userList:
@@ -116,7 +114,6 @@ def process_ftp(filepath):
                 if (i == user[j] and ipaddr == ip[j]): #GETTING COUNT OF EACH USER
                     count += 1
             countList.append(count)
-        #print(f"{userList} {countList}")
 
         errorList = [] #Error dict for AttackNode
         for i in range(len(errortype)):
@@ -134,7 +131,6 @@ def process_ftp(filepath):
                 errorDict['noop'] += 1
             else:
                 errorDict['connect'] += 1
-        #print(errorDict,end='')
 
         targets = {userList[i]:countList[i] for i in range(len(userList))}
         invalid_targets = []
@@ -148,9 +144,8 @@ def process_ftp(filepath):
         n.run_sigs(ftp=True)
     
     AttackNodes = [ n for n in AttackNodes if bool(n.attacks)]
-    return AttackNodes
-
-    #export_format = {'Timestamp': timestamp, 'User': user, "Ip Address":ip,
-    #                 'Log Type': errortype}     #export to dataframe
-    #export = pd.DataFrame(export_format)
-    #export.to_csv("output.csv",index=False) #export to csv format.
+    # to get deviation from normal behaviour
+    export_format = {'Timestamp': timestamp, 'User': user, "Ip Address":ip,
+                     'Log Type': errortype}     #export to dataframe
+    export = pd.DataFrame(export_format)
+    return AttackNodes,export

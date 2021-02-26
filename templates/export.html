@@ -1,0 +1,31 @@
+{% extends "layout.html" %}
+{% block content %}
+<h1 class='functionality'>Export Current Analysis</h1>
+<form method=post action="/api/export" enctype=multipart/form-data>
+    <div class="form-group" id="check-1">
+        <label class="checkbox-inline">
+            <input type="checkbox" id="ip-checkbox" value="true" name="ip"> IP Address
+        </label>
+        <label class="checkbox-inline">
+            <input type="checkbox" id="country-checkbox" value="true" name='country'> Country
+        </label>
+        <label class="checkbox-inline">
+            <input type="checkbox" id="count-checkbox" value="true" name="count"> Traffic Count
+        </label>
+        <label class="checkbox-inline">
+            <input type="checkbox" id="user-checkbox" value="true" name="user"> Usernames (If Applicable)
+        </label>
+        <label class="checkbox-inline">
+            <input type="checkbox" id="sigs-checkbox" value="true" name="sigs"> Detected Signatures
+        </label>
+        <label class="checkbox-inline">
+            <input type="checkbox" id="user-count-checkbox" value="true" name="user-count"> Traffic Count per Username
+        </label>
+    </div>
+    <select class="form-control" id="format-select" name="format-select">
+        <option value="json">json</option>
+        <option value="csv">csv</option>
+    </select>
+    <button type="submit" class="btn btn-default">Generate</button>
+</form>
+{% endblock %}

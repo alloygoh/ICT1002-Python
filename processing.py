@@ -59,6 +59,3 @@ def process_ssh(filepath):
         # cleanup for nodes not flagged
         AttackNodes = [ n for n in AttackNodes if bool(n.attacks)]
     return AttackNodes
-    #export_format = {'User': user, 'IP Address': ip, "Port Number":port, 'Is Invalid User':invalid}     #export to dataframe
-    #export = pd.DataFrame(export_format)
-    #export.to_csv("output.csv",index=False) #export to csv format.
