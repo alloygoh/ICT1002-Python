@@ -36,6 +36,9 @@
     margin: auto;
     margin-top:40px;
 }
+#deviation{
+    margin: auto;
+}
 
 iframe{
     display: inline-block;
