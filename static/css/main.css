@@ -38,6 +38,7 @@
 }
 #deviation{
     margin: auto;
+    display: block;
 }
 
 iframe{
