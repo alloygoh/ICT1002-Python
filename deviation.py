@@ -23,7 +23,7 @@ def gen_ssh_traffic_baseline_graph(nodes):
     plt.axvline(x=avg, color='r', linestyle='-')
     plt.grid()
     plt.subplots_adjust(left=0.4)
-    plt.title('Exceptional Traffic')
+    plt.title('Traffic Breakdown')
     plt.gcf().set_size_inches(11,5)
     plt.savefig('static/deviation.png')
     return True

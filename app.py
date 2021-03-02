@@ -56,7 +56,7 @@ def index(filename=None):
             return redirect(url_for('drender',filename=filename))
 
         else:
-            flash("Invalid file extention")
+            flash("Invalid file extension")
             return render_template('index.html')
 
     return render_template('index.html')

@@ -31,9 +31,10 @@
     margin: 20px;
 }
 #DataTables_Table_0_wrapper{
-    margin-top:20px;
     width: 80%;
     height: 40%;
+    margin: auto;
+    margin-top:40px;
 }
 
 iframe{
