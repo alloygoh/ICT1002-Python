@@ -20,25 +20,22 @@ def get_user(index,ip,Logs):
         except:
             y += 1 #line does not contain "USER", carry on search
             continue
+        
 def process_ftp(filepath):
     f = open(filepath, "rb")           #Reading the File (binary cause char formatting issue)
     log = f.readlines()
-    encoding = 'utf-8'
-    strlogs = []                                               #placeholder for binary to str conversion
     Logs = []                                                  #str version of list
     timestamp = []                                             #store timestamp
     user = []                                                  #store user
     ip = []                                                    #store ip address
     errortype = []                                             #store msg type
+    
     for lines in log:                                          #converting from read binary to read utf-8
         try:
-            strlogs.append(lines.decode(encoding))
+            if (lines.decode('utf-8')).startswith("("):
+                Logs.append(lines.decode('utf-8'))
         except:
             continue
-
-    for lines in strlogs:                                      #Filtering out junk info
-        if lines.startswith("("):
-            Logs.append(lines)
 
     for index, lines in enumerate(Logs):                        #enumerated so the index can retrieve username
         splitted = lines.split()
@@ -51,7 +48,7 @@ def process_ftp(filepath):
                     ip.append(ipaddr[0][1:])                                                    #(xx.xx.xx.xx)> to xx format
                     errortype.append("Suspicious Unicode input")                                #error type
 
-                if splitted[9] == "530" and splitted[10] == "Login":                            #failed logins                                             #fail login has user
+                if splitted[9] == "530" and splitted[10] == "Login":                            #failed logins
                     timestamp.append(splitted[1] + ' ' + splitted[2] + ' ' + splitted[3])       #3 lines before
                     ipaddr = splitted[8].split(")")
                     ip.append(ipaddr[0][1:])
@@ -142,7 +139,6 @@ def process_ftp(filepath):
     for n in AttackNodes:
         # run and apply sigs
         n.run_sigs(ftp=True)
-    
     AttackNodes = [ n for n in AttackNodes if bool(n.attacks)]
     # to get deviation from normal behaviour
     export_format = {'Timestamp': timestamp, 'User': user, "Ip Address":ip,
