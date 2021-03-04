@@ -96,6 +96,7 @@ def drender():
         if nodes[0].errortype == None:
             gen_ssh_traffic_baseline_graph(nodes)
         else:
+            print(df_raw)
             gen_ftp_deviation_graph(nodes,df_raw)
         ttu_data = pchart_wrapper(nodes,'top-ten-users')
         gen_chart_data("Top Ten Users", 'ttu.html',ttu_data)
