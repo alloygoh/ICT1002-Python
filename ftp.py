@@ -21,7 +21,7 @@ def get_user(index,ip,Logs):
             y += 1 #line does not contain "USER", carry on search
             continue
 def process_ftp(filepath):
-    f = open("resource/FileZilla Server.log", "rb")           #Reading the File (binary cause char formatting issue)
+    f = open(filepath, "rb")           #Reading the File (binary cause char formatting issue)
     log = f.readlines()
     encoding = 'utf-8'
     strlogs = []                                               #placeholder for binary to str conversion
