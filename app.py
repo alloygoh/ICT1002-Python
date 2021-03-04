@@ -139,9 +139,6 @@ def generate_map(nodes):
 def release_cache():
     global current_analysis
     current_analysis = None
-    os.remove('static/cbd.html')
-    os.remove('static/map.html')
-    os.remove('static/ttu.html')
     print("[+] cache released!")
     print(current_analysis)
     return redirect(url_for('index'))
