@@ -21,7 +21,6 @@ class AttackNode:
     def get_validusernames(self) -> list:
         return [t for t in self.targets if t not in self.invalid_targets]
 
-
     # calculate total number of requests made by IP
     def get_totaltries(self) -> int:
         return sum(self.targets.values())
