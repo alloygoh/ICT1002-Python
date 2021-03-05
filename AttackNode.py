@@ -2,16 +2,12 @@ from signature import *
 class AttackNode:
     def __init__(self,ip:str,country:str,geo:list,targets:dict,invalid_targets:list,errortype=None):
         self.ip = ip
-
-        # self.geoinfo = dict{country, etc, etc}
         self.country = country
         self.geo = geo
         # dictionary containing {username:tries}
         self.targets = targets
         # list of invalid usernames
         self.invalid_targets = invalid_targets
-        self.country = country
-        self.geo = geo
 
         # additional info for ftp sigs
         self.errortype = errortype
