@@ -2,7 +2,7 @@
 
 ICT1002 Project Work
 
-This repository contains the source code, in partial fulfilment, of the module ICT1002 Programming Fundamentals. 
+This repository contains the source code, in partial fulfilment, of the module ICT1002 Programming Fundamentals assignment. 
 
 ## Description
 
