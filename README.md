@@ -1,22 +1,16 @@
 # ICT1002-Python
+
 ICT1002 Project Work
 
-## General Instructions
+This repository contains the source code, in partial fulfilment, of the module ICT1002 Programming Fundamentals. 
 
-1. Clone this repo 
-2. Create new branch using `git checkout -b <feature name-your name>`
-3. Add your code and stage it using `git add *`
-4. Commit using `git commit -m "<Description of work added>"`
-5. Push code to repo using `git push origin <branch name>` 
+## Description
 
-### For Linux
-`apt install libbz2-dev`
+The project aims to analyse dataset to determine if an attack has happened.  
+Currently, the project is able to parse `sshd` & `FileZilla FTP Server` logs, and perform analysis on it.
 
-1. Clone this repo 
-2. Create new branch using `git checkout -b <feature name-your name>`
-3. Add your code and stage it using `git add *`
-4. Commit using `git commit -m "<Description of work added>"`
-5. Push code to repo using `git push origin <branch name>`
+Upon analysis, the dashboard will present several graphs to allow for analysts to better understand what's going on, from the logs submitted. The dashbard would also highlight potential attacks detected.
+
 
 Reference
 https://github.com/santiago-bassett/Alienvault-Demo_scripts
